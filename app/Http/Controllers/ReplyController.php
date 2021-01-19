@@ -11,45 +11,112 @@ use Symfony\Component\HttpFoundation\Response;
 class ReplyController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Get(
+    *     path="/question/{slug}/reply",
+    *     summary="Get all Replies for a particular question",
+    *     description="Get all Replies for a particular question - Replies Collection",
+    *     tags={"Reply"},
+    *     security={{ "apiAuth": {} }},
+    *     @OA\Response(response="200", description="Replies for a particular question", @OA\JsonContent()),
+    *     @OA\Parameter(
+    *       name="slug",
+    *       required=true,
+    *       description="Question Slug",
+    *       in="path",
+    *       @OA\Schema(
+    *           type="string"   
+    *       )
+    *   )
+    *)
+    */
     public function index(Question $question)
     {
         return ReplyResource::collection($question->replies);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Post(
+    * path="/question/{slug}/reply",
+    * summary="Category Create",
+    * description="Create a new Reply",
+    * operationId="createReply",
+    * tags={"Reply"},
+    * @OA\RequestBody(
+    *      required=true,
+    *      @OA\JsonContent(ref="#/components/schemas/ReplyRequest")
+    *    ),
+    * security={{ "apiAuth": {} }},
+    * @OA\Response(
+    *      response=200,
+    *      description="Success"
+    *    ),
+    * @OA\Parameter(
+    *    name="slug",
+    *    required=true,
+    *    description="Question Slug",
+    *    in="path",
+    *    @OA\Schema(
+    *       type="string"   
+    *    )
+    *  )
+    * )
+    */
     public function store(Question $question, Request $request)
     {
-        $reply = $question->replies()->create($request->all());
+        $reply = $question->replies()->create([
+            'body' => $request->input('body'),
+            'question_id' => $request->input('question_id'),
+            'user_id' => 1
+            // 'user_id' => auth()->id()
+        ]);
         return response()->json(new ReplyResource($reply), Response::HTTP_CREATED);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Reply  $reply
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Get(
+    *     path="/questions/{slug}/reply/{id}",
+    *     tags={"Reply"},
+    *     security={{ "apiAuth": {} }},
+    *     @OA\Response(response="200", description="Question", @OA\JsonContent()),
+    *     @OA\Parameter(
+    *       name="slug",
+    *       required=true,
+    *       description="Question Slug",
+    *       in="path",
+    *       @OA\Schema(
+    *           type="string"   
+    *       )
+    *   ),
+    *   @OA\Parameter(
+    *       name="id",
+    *       required=true,
+    *       description="Reply Id",
+    *       in="path",
+    *       @OA\Schema(
+    *           type="integer"   
+    *       )
+    *   )
+    *)
+    */
     public function show(Question $question, Reply $reply)
     {
         return new ReplyResource($reply);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Reply  $reply
-     * @return \Illuminate\Http\Response
-     */
+     * @OA\Put(
+     * path="/questions/{slug}/reply/{id}",
+     * summary="Update a Question",
+     * description="Logout user and invalidate token",
+     * operationId="authLogout",
+     * tags={"Reply"},
+     * security={{ "apiAuth": {} }},
+     *    @OA\Response(
+     *      response=200,
+     *      description="Success"
+     *    ),
+     * )
+    */
     public function update(Question $question, Request $request, Reply $reply)
     {
         $reply->update($request->all());
@@ -57,11 +124,31 @@ class ReplyController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Reply  $reply
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Delete(
+    *     path="/questions/{slug}/reply/{id}",
+    *     tags={"Reply"},
+    *     security={{ "apiAuth": {} }},
+    *     @OA\Response(response="200", description="Question", @OA\JsonContent()),
+    *     @OA\Parameter(
+    *       name="slug",
+    *       required=true,
+    *       description="Question Slug",
+    *       in="path",
+    *       @OA\Schema(
+    *           type="string"   
+    *       )
+    *   ),
+    *   @OA\Parameter(
+    *       name="id",
+    *       required=true,
+    *       description="Reply Id",
+    *       in="path",
+    *       @OA\Schema(
+    *           type="integer"   
+    *       )
+    *   )
+    *)
+    */
     public function destroy(Question $question, Reply $reply)
     {
         $reply->delete();
