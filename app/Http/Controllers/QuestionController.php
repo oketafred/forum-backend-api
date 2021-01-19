@@ -53,8 +53,7 @@ class QuestionController extends Controller
             'slug' => Str::slug($request->input('title')),
             'body' => $request->input('body'),
             'category_id' => $request->input('category_id'),
-            'user_id' => 1
-            // 'user_id' => auth()->id()
+            'user_id' => auth()->id()
         ]);
 
         return response()->json($question, Response::HTTP_CREATED);

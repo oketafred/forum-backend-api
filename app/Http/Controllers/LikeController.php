@@ -41,8 +41,7 @@ class LikeController extends Controller
         }
 
         $reply->like()->create([
-            // 'user_id' => auth()->id()
-            'user_id' => '1'
+            'user_id' => auth()->id()
         ]);
         return response()->json($reply, Response::HTTP_CREATED);
     }
@@ -68,8 +67,7 @@ class LikeController extends Controller
     */
     public function unLikeIt(Reply $reply)
     {
-        // $reply->like()->where('user_id', auth()->id())->first()->delete();
-        $reply->like()->where('user_id', '1')->first()->delete();
+        $reply->like()->where('user_id', auth()->id())->first()->delete();
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

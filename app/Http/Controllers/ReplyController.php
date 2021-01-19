@@ -66,8 +66,7 @@ class ReplyController extends Controller
         $reply = $question->replies()->create([
             'body' => $request->input('body'),
             'question_id' => $request->input('question_id'),
-            'user_id' => 1
-            // 'user_id' => auth()->id()
+            'user_id' => auth()->id()
         ]);
         return response()->json(new ReplyResource($reply), Response::HTTP_CREATED);
     }
