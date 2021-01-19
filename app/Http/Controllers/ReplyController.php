@@ -74,7 +74,9 @@ class ReplyController extends Controller
 
     /**
     * @OA\Get(
-    *     path="/questions/{slug}/reply/{id}",
+    *     path="/question/{slug}/reply/{id}",
+    *     summary="Get a Specific Reply",
+    *     description="Get a specific Reply by passing the question slug and reply id as the parameters",
     *     tags={"Reply"},
     *     security={{ "apiAuth": {} }},
     *     @OA\Response(response="200", description="Question", @OA\JsonContent()),
@@ -105,16 +107,38 @@ class ReplyController extends Controller
 
     /**
      * @OA\Put(
-     * path="/questions/{slug}/reply/{id}",
-     * summary="Update a Question",
-     * description="Logout user and invalidate token",
-     * operationId="authLogout",
+     * path="/question/{slug}/reply/{id}",
+     * summary="Update a Specific Reply",
+     * description="Update a specific Reply by passing the question slug and reply id as the parameters",
+     * operationId="replyUpdated",
      * tags={"Reply"},
+     * @OA\RequestBody(
+     *      required=true,
+     *      @OA\JsonContent(ref="#/components/schemas/ReplyRequest")
+     *    ),
      * security={{ "apiAuth": {} }},
-     *    @OA\Response(
+     * @OA\Response(
      *      response=200,
      *      description="Success"
      *    ),
+     * @OA\Parameter(
+     *       name="slug",
+     *       required=true,
+     *       description="Question Slug",
+     *       in="path",
+     *       @OA\Schema(
+     *           type="string"   
+     *       )
+     *   ),
+     *   @OA\Parameter(
+     *       name="id",
+     *       required=true,
+     *       description="Reply Id",
+     *       in="path",
+     *       @OA\Schema(
+     *           type="integer"   
+     *       )
+     *   )
      * )
     */
     public function update(Question $question, Request $request, Reply $reply)
@@ -125,27 +149,29 @@ class ReplyController extends Controller
 
     /**
     * @OA\Delete(
-    *     path="/questions/{slug}/reply/{id}",
-    *     tags={"Reply"},
-    *     security={{ "apiAuth": {} }},
-    *     @OA\Response(response="200", description="Question", @OA\JsonContent()),
-    *     @OA\Parameter(
-    *       name="slug",
-    *       required=true,
-    *       description="Question Slug",
-    *       in="path",
-    *       @OA\Schema(
-    *           type="string"   
-    *       )
-    *   ),
-    *   @OA\Parameter(
-    *       name="id",
-    *       required=true,
-    *       description="Reply Id",
-    *       in="path",
-    *       @OA\Schema(
-    *           type="integer"   
-    *       )
+    * path="/question/{slug}/reply/{id}",
+    * summary="Delete a Specific Reply",
+    * description="Delete a specific Reply by passing the question slug and reply id as the parameters",
+    * tags={"Reply"},
+    * security={{ "apiAuth": {} }},
+    * @OA\Response(response="200", description="Question", @OA\JsonContent()),
+    * @OA\Parameter(
+    *   name="slug",
+    *   required=true,
+    *   description="Question Slug",
+    *   in="path",
+    *   @OA\Schema(
+    *     type="string"   
+    *   )
+    * ),
+    * @OA\Parameter(
+    *   name="id",
+    *   required=true,
+    *   description="Reply Id",
+    *   in="path",
+    *   @OA\Schema(
+    *       type="integer"   
+    *   )
     *   )
     *)
     */
