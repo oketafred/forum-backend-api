@@ -26,7 +26,7 @@ class Controller extends BaseController
      * )
      * 
      *@OA\Server(
-     *      url="http://localhost/api",
+     *      url=L5_SWAGGER_CONST_HOST,
      *      description="Forum API Server"
      * )
      * 

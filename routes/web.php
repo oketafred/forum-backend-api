@@ -19,6 +19,6 @@ Route::get('/', function () {
         'developer' => 'Oketa Fred',
         'email' => 'oketafred@gmail.com',
         'telephone_number' => '+256 787-584-128',
-        'documentation_url' => env('L5_SWAGGER_CONST_HOST') . '/api/documentation'
+        'documentation_url' => env('L5_SWAGGER_CONST_HOST') . '/documentation'
     ]);
 });
